@@ -1,6 +1,6 @@
 {
   "name": "@atlassian/reg-cli",
-  "version": "0.18.10-flake-marker",
+  "version": "0.18.10-flake-marker-1",
   "description": "",
   "main": "./dist/index.js",
   "start": "node ./dist/cli.js",
@@ -25,6 +25,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/mma-atl/reg-cli/"
+  },
+  "publishConfig": {
+    "registry": "https://packages.atlassian.com/api/npm/npm-remote"
   },
 	"ava": {
     "workerThreads": false
@@ -101,6 +104,6 @@
     "report/sample"
   ],
   "bin": {
-    "reg-cli": "./dist/cli.js"
+    "atlassian-reg-cli": "./dist/cli.js"
   }
 }
