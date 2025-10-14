@@ -11,6 +11,10 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
+  - [CLI](#cli)
+  - [Per-Image Threshold Overrides](#per-image-threshold-overrides)
+  - [HTML Report](#html-report)
+  - [From JSON](#from-json)
 - [Test](#test)
 - [Contribute](#contribute)
 - [License](#license)
@@ -50,6 +54,64 @@ $ reg-cli /path/to/actual-dir /path/to/expected-dir /path/to/diff-dir -R ./repor
   * `-A`, `--enableAntialias` Enable antialias. If omitted false.
   * `-X`, `--additionalDetection`. Enable additional difference detection(highly experimental). Select "none" or "client" (default: "none").
   * `-F`, `--from` Generate report from json. Please specify json file. If set, only report will be output without comparing images.
+  * `--image-config` Specify per-image threshold overrides. Can be used multiple times or point to a JSON config file.
+
+### Per-Image Threshold Overrides
+
+For the below examples note that the image must contain it's relative path (from the output folder).
+
+You can override thresholds for specific images using the `--image-config` option in two ways:
+
+#### Inline Configuration
+
+Use the format `"image.png:param=value,param2=value2"`:
+
+```sh
+$ reg-cli /path/to/actual /path/to/expected /path/to/diff \
+  --image-config "relative/output/path/to/image/logo.png:thresholdRate=0.1" \
+  --image-config "relative/output/path/to/imagescreenshot.png:thresholdPixel=100,matchingThreshold=0.05"
+```
+
+#### JSON Configuration File
+
+Create a JSON file with your image overrides:
+
+**image-config.json:**
+```json
+{
+  "imageOverrides": {
+    "logo.png": {
+      "thresholdRate": 0.1,
+      "matchingThreshold": 0.02
+    },
+    "relative/output/path/screenshot.png": {
+      "thresholdPixel": 100
+    },
+    "relative/output/path/component-test.png": {
+      "matchingThreshold": 0.05,
+      "thresholdRate": 0.2
+    },
+    "relative/output/path/sensitive-image.jpg": {
+      "matchingThreshold": 0.001,
+      "thresholdRate": 0.05
+    }
+  }
+} 
+```
+
+Then use it with:
+
+```sh
+$ reg-cli /path/to/actual /path/to/expected /path/to/diff --image-config ./image-config.json
+```
+
+#### Supported Override Parameters
+
+- `matchingThreshold`: Per-pixel sensitivity (0-1, lower = more sensitive)
+- `thresholdRate`: Percentage of different pixels allowed (0-1)  
+- `thresholdPixel`: Absolute number of different pixels allowed
+
+Per-image overrides take precedence over global threshold settings. If no override is specified for an image, the global settings are used.
 
 ### html report
 
