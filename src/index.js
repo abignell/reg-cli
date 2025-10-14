@@ -20,6 +20,12 @@ type CompareResult = {
   image: string,
 };
 
+type ImageOverride = {
+  matchingThreshold?: number,
+  thresholdRate?: number,
+  thresholdPixel?: number,
+};
+
 type RegParams = {
   actualDir: string,
   expectedDir: string,
@@ -37,6 +43,7 @@ type RegParams = {
   concurrency?: number,
   enableAntialias?: boolean,
   enableClientAdditionalDetection?: boolean,
+  imageOverrides?: { [string]: ImageOverride },
 };
 
 const copyImages = (actualImages, { expectedDir, actualDir }) => {
@@ -71,6 +78,7 @@ const compareImages = (
     thresholdRate,
     concurrency,
     enableAntialias,
+    imageOverrides,
   },
 ): Promise<CompareResult[]> => {
   const images = actualImages.filter(actualImage => expectedImages.includes(actualImage));
@@ -82,12 +90,18 @@ const compareImages = (
       image => {
         const p = processes.find(p => !p.isRunning());
         if (p) {
+          // Get per-image overrides if they exist
+          const override = imageOverrides && imageOverrides[image];
+          const imageMatchingThreshold = override?.matchingThreshold ?? matchingThreshold;
+          const imageThresholdRate = override?.thresholdRate ?? thresholdRate;
+          const imageThresholdPixel = override?.thresholdPixel ?? thresholdPixel;
+          
           return p.run({
             ...dirs,
             image,
-            matchingThreshold,
-            thresholdRate,
-            thresholdPixel,
+            matchingThreshold: imageMatchingThreshold,
+            thresholdRate: imageThresholdRate,
+            thresholdPixel: imageThresholdPixel,
             enableAntialias,
           });
         }
@@ -163,6 +177,7 @@ module.exports = (params: RegParams) => {
     thresholdPixel,
     enableAntialias,
     enableClientAdditionalDetection,
+    imageOverrides,
   } = params;
   const dirs = { actualDir, expectedDir, diffDir };
   const emitter = new EventEmitter();
@@ -182,6 +197,7 @@ module.exports = (params: RegParams) => {
     thresholdPixel,
     concurrency,
     enableAntialias: !!enableAntialias,
+    imageOverrides,
   })
     .then(result => aggregate(result))
     .then(({ passed, failed, diffItems }) => {

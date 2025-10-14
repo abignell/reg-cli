@@ -36,8 +36,11 @@ const cli = meow(
     -X, --additionalDetection. Enable additional difference detection(highly experimental). Select "none" or "client" (default: "none").
     -F, --from Generate report from json. Please specify json file. If set, only report will be output without comparing images.
     -D, --customDiffMessage Pass custom massage that will logged to the terminal when there is a diff.
+    --image-config Specify per-image threshold overrides. Can be used multiple times. Format: "image.png:thresholdRate=0.1,thresholdPixel=10" or JSON file path.
   Examples
     $ reg-cli /path/to/actual-dir /path/to/expected-dir /path/to/diff-dir -U -D ./reg.json
+    $ reg-cli /path/to/actual-dir /path/to/expected-dir /path/to/diff-dir --image-config "test.png:thresholdRate=0.1" --image-config "other.png:thresholdPixel=5"
+    $ reg-cli /path/to/actual-dir /path/to/expected-dir /path/to/diff-dir --image-config ./image-config.json
 `,
   {
     flags: {
@@ -106,9 +109,73 @@ const cli = meow(
         type: 'string',
         alias: 'D',
       },
+      imageConfig: {
+        type: 'string',
+        isMultiple: true,
+      },
     },
   },
 );
+
+// Helper function to parse per-image configuration
+const parseImageOverrides = (imageConfigs) => {
+  if (!imageConfigs || imageConfigs.length === 0) {
+    return {};
+  }
+
+  const overrides = {};
+
+  imageConfigs.forEach(config => {
+    // Check if it's a JSON file path
+    if (config.endsWith('.json')) {
+      try {
+        const jsonContent = fs.readFileSync(config, { encoding: 'utf8' });
+        const jsonOverrides = JSON.parse(jsonContent).imageOverrides;
+        Object.assign(overrides, jsonOverrides);
+      } catch (e) {
+        log.fail(`Failed to read or parse image config file: ${config}`);
+        log.fail(e.message);
+        process.exit(1);
+      }
+    } else {
+      // Parse inline format: "image.png:thresholdRate=0.1,thresholdPixel=10"
+      const [imageName, paramsStr] = config.split(':');
+      if (!imageName || !paramsStr) {
+        log.fail(`Invalid image config format: ${config}. Expected format: "image.png:thresholdRate=0.1,thresholdPixel=10"`);
+        process.exit(1);
+      }
+
+      const imageOverride = {};
+      const params = paramsStr.split(',');
+      
+      params.forEach(param => {
+        const [key, value] = param.split('=');
+        if (!key || value === undefined) {
+          log.fail(`Invalid parameter format in image config: ${param}. Expected format: "key=value"`);
+          process.exit(1);
+        }
+
+        const numValue = Number(value);
+        if (isNaN(numValue)) {
+          log.fail(`Invalid numeric value in image config: ${value} for parameter ${key}`);
+          process.exit(1);
+        }
+
+        if (key === 'thresholdRate' || key === 'thresholdPixel' || key === 'matchingThreshold') {
+          imageOverride[key] = numValue;
+        } else {
+          log.fail(`Unknown parameter in image config: ${key}. Supported parameters: thresholdRate, thresholdPixel, matchingThreshold`);
+          process.exit(1);
+        }
+      });
+
+      overrides[imageName] = imageOverride;
+    }
+  });
+
+  return overrides;
+};
+
 if (!cli.flags.from) {
   if (!process.argv[2] || !process.argv[3] || !process.argv[4]) {
     log.fail('please specify actual, expected and diff images directory.');
@@ -134,6 +201,9 @@ const from = String(cli.flags.from || '');
 const customDiffMessage = String(
   cli.flags.customDiffMessage || `\nInspect your code changes, re-run with \`-U\` to update them. `,
 );
+
+// Parse image overrides
+const imageOverrides = parseImageOverrides(cli.flags.imageConfig);
 
 // If from option specified, generate report from json and exit.
 if (from) {
@@ -182,6 +252,7 @@ const observer = compare({
   concurrency: Number(cli.flags.concurrency || 4),
   enableAntialias: !!cli.flags.enableAntialias,
   enableClientAdditionalDetection,
+  imageOverrides,
 });
 
 observer.once('start', () => spinner.start());
