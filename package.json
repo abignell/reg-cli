@@ -77,5 +77,6 @@
     "report/assets/favicon_success.png",
     "report/sample"
   ],
-  "bin": "./dist/cli.js"
+  "bin": "./dist/cli.js",
+  "packageManager": "yarn@4.12.0"
 }
