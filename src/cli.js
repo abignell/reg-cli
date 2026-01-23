@@ -118,7 +118,7 @@ const cli = meow(
 );
 
 // Helper function to parse per-image configuration
-const parseImageOverrides = (imageConfigs) => {
+const parseImageOverrides = (imageConfigs: Array<string>) => {
   if (!imageConfigs || imageConfigs.length === 0) {
     return {};
   }
@@ -202,8 +202,8 @@ const customDiffMessage = String(
   cli.flags.customDiffMessage || `\nInspect your code changes, re-run with \`-U\` to update them. `,
 );
 
-// Parse image overrides
-const imageOverrides = parseImageOverrides(cli.flags.imageConfig);
+// Parse image overrides (meow's isMultiple option returns an array, but Flow types don't reflect this)
+const imageOverrides = parseImageOverrides((cli.flags.imageConfig: any));
 
 // If from option specified, generate report from json and exit.
 if (from) {
