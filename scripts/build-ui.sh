@@ -14,7 +14,7 @@ else
   cd $DIR
 fi
 
-yarn install --frozen-lockfile
+yarn install --no-immutable
 
 yarn build
 
