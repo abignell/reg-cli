@@ -4,10 +4,13 @@
 import Mustache from 'mustache';
 import * as detectDiff from 'x-img-diff-js';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import mkdirp from 'make-dir'; // $FlowIgnore
 import path from 'path';
 // $FlowIgnore
 import * as xmlBuilder from 'xmlbuilder2';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export type ReportParams = {
   passedItems: string[],

@@ -1,9 +1,10 @@
 {
-  "name": "reg-cli",
-  "version": "0.18.10",
+  "name": "@atlassian/reg-cli",
+  "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
   "start": "node ./dist/cli.js",
+  "type": "module",
   "scripts": {
     "watch": "babel src --watch -d dist",
     "build": "npm run build:cli && npm run build:report",
@@ -77,6 +78,8 @@
     "report/assets/favicon_success.png",
     "report/sample"
   ],
-  "bin": "./dist/cli.js",
+  "bin": {
+    "atlassian-reg-cli": "./dist/cli.js"
+  },
   "packageManager": "yarn@4.12.0"
 }

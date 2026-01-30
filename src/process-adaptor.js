@@ -2,8 +2,9 @@
 
 import { fork } from 'child_process'; // $FlowIgnore
 import path from 'path';
+import { fileURLToPath } from 'url';
 import type EventEmitter from 'events';
-import type { DiffCreatorParams, DiffResult } from './diff';
+import type { DiffCreatorParams, DiffResult } from './diff.js';
 
 export default class ProcessAdaptor {
 
@@ -12,7 +13,7 @@ export default class ProcessAdaptor {
   _emitter: EventEmitter;
 
   constructor(emitter: EventEmitter) {
-    this._process = fork(path.resolve(__dirname, './diff.js'));
+    this._process = fork(path.resolve(path.dirname(fileURLToPath(import.meta.url)), './diff.js'));
     this._isRunning = false;
     this._emitter = emitter;
   }

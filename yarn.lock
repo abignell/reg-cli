@@ -5,6 +5,47 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@atlassian/reg-cli@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@atlassian/reg-cli@workspace:."
+  dependencies:
+    "@babel/cli": "npm:^7.28.3"
+    "@babel/core": "npm:^7.28.5"
+    "@babel/plugin-transform-block-scoping": "npm:^7.28.5"
+    "@babel/plugin-transform-flow-strip-types": "npm:^7.27.1"
+    "@babel/preset-env": "npm:^7.28.5"
+    "@babel/preset-flow": "npm:^7.27.1"
+    "@babel/preset-stage-2": "npm:^7.8.3"
+    ava: "npm:6.4.1"
+    bluebird: "npm:3.7.2"
+    chalk: "npm:4.1.2"
+    cli-spinner: "npm:0.2.10"
+    copyfiles: "npm:2.4.1"
+    cross-env: "npm:10.1.0"
+    cross-spawn: "npm:7.0.6"
+    del: "npm:8.0.1"
+    finalhandler: "npm:2.1.1"
+    flow-bin: "npm:0.77.0"
+    flow-typed: "npm:4.1.1"
+    glob: "npm:7.2.3"
+    img-diff-js: "npm:0.5.4"
+    jpeg-js: "npm:^0.4.4"
+    lodash: "npm:4.17.21"
+    make-dir: "npm:3.1.0"
+    md5-file: "npm:4.0.0"
+    meow: "npm:^9.0.0"
+    mustache: "npm:4.2.0"
+    puppeteer: "npm:24.34.0"
+    rimraf: "npm:3.0.2"
+    serve-static: "npm:2.2.1"
+    x-img-diff-js: "npm:0.3.5"
+    xmlbuilder2: "npm:^4.0.3"
+    yargs-parser: "npm:^21.0.1"
+  bin:
+    atlassian-reg-cli: ./dist/cli.js
+  languageName: unknown
+  linkType: soft
+
 "@babel/cli@npm:^7.28.3":
   version: 7.28.6
   resolution: "@babel/cli@npm:7.28.6::__archiveUrl=https%3A%2F%2Fpackages.atlassian.com%2Fapi%2Fnpm%2Fnpm-remote%2F%40babel%2Fcli%2F-%2Fcli-7.28.6.tgz"
@@ -5139,47 +5180,6 @@ __metadata:
   checksum: 10c0/d64a6b5c0b50eb3ddce3ab770f866658a2b9998c678f797919ceb1b586bab9259b311407280bd80b804e2a7c7539b19238ae6a2a20c843f1a7fcff21d48c2eae
   languageName: node
   linkType: hard
-
-"reg-cli@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "reg-cli@workspace:."
-  dependencies:
-    "@babel/cli": "npm:^7.28.3"
-    "@babel/core": "npm:^7.28.5"
-    "@babel/plugin-transform-block-scoping": "npm:^7.28.5"
-    "@babel/plugin-transform-flow-strip-types": "npm:^7.27.1"
-    "@babel/preset-env": "npm:^7.28.5"
-    "@babel/preset-flow": "npm:^7.27.1"
-    "@babel/preset-stage-2": "npm:^7.8.3"
-    ava: "npm:6.4.1"
-    bluebird: "npm:3.7.2"
-    chalk: "npm:4.1.2"
-    cli-spinner: "npm:0.2.10"
-    copyfiles: "npm:2.4.1"
-    cross-env: "npm:10.1.0"
-    cross-spawn: "npm:7.0.6"
-    del: "npm:8.0.1"
-    finalhandler: "npm:2.1.1"
-    flow-bin: "npm:0.77.0"
-    flow-typed: "npm:4.1.1"
-    glob: "npm:7.2.3"
-    img-diff-js: "npm:0.5.4"
-    jpeg-js: "npm:^0.4.4"
-    lodash: "npm:4.17.21"
-    make-dir: "npm:3.1.0"
-    md5-file: "npm:4.0.0"
-    meow: "npm:^9.0.0"
-    mustache: "npm:4.2.0"
-    puppeteer: "npm:24.34.0"
-    rimraf: "npm:3.0.2"
-    serve-static: "npm:2.2.1"
-    x-img-diff-js: "npm:0.3.5"
-    xmlbuilder2: "npm:^4.0.3"
-    yargs-parser: "npm:^21.0.1"
-  bin:
-    reg-cli: ./dist/cli.js
-  languageName: unknown
-  linkType: soft
 
 "regenerate-unicode-properties@npm:^10.1.0":
   version: 10.1.1

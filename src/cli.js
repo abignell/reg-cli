@@ -5,13 +5,13 @@
 import { Spinner } from 'cli-spinner';
 import meow from 'meow';
 import path from 'path';
-import compare from './';
-import log from './log';
+import compare from './index.js';
+import log from './log.js';
 import fs from 'fs';
 
 // import notifier from './notifier';
-import { BALLOT_X, CHECK_MARK, GREEK_CROSS, MINUS } from './icon';
-import createReport from './report';
+import { BALLOT_X, CHECK_MARK, GREEK_CROSS, MINUS } from './icon.js';
+import createReport from './report.js';
 
 const spinner = new Spinner();
 spinner.setSpinnerString(18);

@@ -1,6 +1,6 @@
 /* @flow */
 
-const chalk = require('chalk');
+import chalk from 'chalk';
 
 export default {
   info(text: string) {

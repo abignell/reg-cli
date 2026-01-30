@@ -2,18 +2,18 @@
 
 import glob from 'glob'; // $FlowIgnore
 import mkdirp from 'make-dir'; // $FlowIgnore
-import del from 'del'; // $FlowIgnore
+import { deleteAsync } from 'del'; // $FlowIgnore
 import fs from 'fs';
 import path from 'path';
-import { range } from 'lodash';
-import log from './log';
-import createReport from './report';
+import range from 'lodash/range.js';
+import log from './log.js';
+import createReport from './report.js';
 // $FlowIgnore
 import bluebird from 'bluebird';
 import EventEmitter from 'events';
-import ProcessAdaptor from './process-adaptor';
-import type { DiffCreatorParams } from './diff';
-import { findImages } from './image-finder';
+import ProcessAdaptor from './process-adaptor.js';
+import type { DiffCreatorParams } from './diff.js';
+import { findImages } from './image-finder.js';
 
 type CompareResult = {
   passed: boolean,
@@ -121,7 +121,7 @@ const cleanupExpectedDir = (expectedDir, changedFiles) => {
     return escapeGlob(path.posix.join(...directories, image));
   });
   // force: true needed to allow deleting outside working directory
-  return del(paths, { force: true });
+  return deleteAsync(paths, { force: true });
 };
 
 const escapeGlob = fileName => {
@@ -159,7 +159,7 @@ const updateExpected = ({ actualDir, expectedDir, diffDir, deletedImages, newIma
     });
 };
 
-module.exports = (params: RegParams) => {
+export default (params: RegParams) => {
   const {
     actualDir,
     expectedDir,
