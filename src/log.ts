@@ -1,5 +1,3 @@
-/* @flow */
-
 import chalk from 'chalk';
 
 export default {

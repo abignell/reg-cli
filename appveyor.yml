@@ -8,7 +8,7 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # install modules
   - npm i -g yarn
-  - yarn install --frozen-lockfile
+  - yarn install --immutable
 
 # Post-install test scripts.
 test_script:
