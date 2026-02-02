@@ -10,7 +10,7 @@ if [ -e "$DIR" ]; then
   git fetch origin --tags
   git checkout refs/tags/$VERSION
 else
-  git clone https://github.com/reg-viz/reg-cli-report-ui.git -b $VERSION $DIR --depth 1
+  git clone https://github.com/abignell/reg-cli-report-ui.git -b $VERSION $DIR --depth 1
   cd $DIR
 fi
 
