@@ -1,6 +1,6 @@
 {
   "name": "@atlassian/reg-cli",
-  "version": "1.0.0-beta-1",
+  "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
   "start": "node ./dist/cli.js",
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/reg-viz/reg-cli/"
+    "url": "https://github.com/abignell/reg-cli/"
   },
   "ava": {
     "workerThreads": false
