@@ -1,20 +1,25 @@
-const path = require('path');
-const finalhandler = require('finalhandler');
-const http = require('http');
-const serveStatic = require('serve-static');
+import http from 'node:http';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import finalhandler from 'finalhandler';
+import mkdirp from 'make-dir';
+import puppeteer from 'puppeteer';
+import serveStatic from 'serve-static';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const root = path.resolve(__dirname, '..');
 const serve = serveStatic(`${root}/sample`, { index: ['index.html'] });
 
 const server = http.createServer((req, res) => {
-  serve(req, res, finalhandler(req, res));
+  serve(
+    req,
+    res,
+    finalhandler(req as unknown as Request, res as unknown as Response),
+  );
 });
 
 server.listen(3000);
-
-const mkdirp = require('make-dir');
-
-const puppeteer = require('puppeteer');
 
 mkdirp.sync(`${root}/screenshot/actual`);
 
